@@ -51,6 +51,7 @@ func Test_Block_GetTransactions(t *testing.T) {
 	var reqData model.BlockGetTransactionRequest
 	var blockNumber int64 = 685714
 	reqData.SetBlockNumber(blockNumber)
+	
 	resData := testSdk.Block.GetTransactions(reqData)
 	if resData.ErrorCode != 0 {
 		t.Errorf(resData.ErrorDesc)
