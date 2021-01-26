@@ -13,7 +13,6 @@ import (
 
 type TokenOperation struct {
 	Asset      AssetOperation
-	Ctp10Token Ctp10TokenOperation
 }
 type AssetOperation struct {
 	Url string

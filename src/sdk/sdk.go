@@ -45,7 +45,6 @@ func (sdk *Sdk) Init(reqData model.SDKInitRequest) model.SDKInitResponse {
 	sdk.Token.Asset.Url = reqData.GetUrl()
 	sdk.Transaction.Url = reqData.GetUrl()
 	sdk.Block.Url = reqData.GetUrl()
-	sdk.Token.Ctp10Token.Url = reqData.GetUrl()
 	resData.ErrorCode = exception.SUCCESS
 	return resData
 }
