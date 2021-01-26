@@ -62,8 +62,8 @@ Import the packages before generating the SDK instance.
 
 ```go 
 import(
-  "github.com/bubiproject/bubi-sdk-go/src/model"
-  "github.com/bubiproject/bubi-sdk-go/src/sdk"
+  "github.com/bubicn/bubichain-v4-sdk-go/src/model"
+  "github.com/bubicn/bubichain-v4-sdk-go/src/sdk"
 
 ```
 
