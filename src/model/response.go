@@ -607,75 +607,6 @@ type LogCreateResult struct {
 	Operation protocol.Operation `json:"operation"`
 }
 
-//Ctp10Token
-type Ctp10TokenIssueResponse struct {
-	ErrorCode int                   `json:"error_code"`
-	ErrorDesc string                `json:"error_desc"`
-	Result    Ctp10TokenIssueResult `json:"result"`
-}
-type Ctp10TokenIssueResult struct {
-	Operation protocol.Operation `json:"operation"`
-}
-
-//Atp10TokenIssue
-type Atp10TokenIssueResponse struct {
-	ErrorCode int                   `json:"error_code"`
-	ErrorDesc string                `json:"error_desc"`
-	Result    Atp10TokenIssueResult `json:"result"`
-}
-type Atp10TokenIssueResult struct {
-	Operations []protocol.Operation `json:"operations"`
-}
-
-//Atp10TokenAppendToIssue
-type Atp10TokenAppendToIssueResponse struct {
-	ErrorCode int                           `json:"error_code"`
-	ErrorDesc string                        `json:"error_desc"`
-	Result    Atp10TokenAppendToIssueResult `json:"result"`
-}
-type Atp10TokenAppendToIssueResult struct {
-	Operations []protocol.Operation `json:"operations"`
-}
-type Ctp10TokenTransferResponse struct {
-	ErrorCode int                      `json:"error_code"`
-	ErrorDesc string                   `json:"error_desc"`
-	Result    Ctp10TokenTransferResult `json:"result"`
-}
-type Ctp10TokenTransferResult struct {
-	Operation protocol.Operation `json:"operation"`
-}
-type Ctp10TokenTransferFromResponse struct {
-	ErrorCode int                          `json:"error_code"`
-	ErrorDesc string                       `json:"error_desc"`
-	Result    Ctp10TokenTransferFromResult `json:"result"`
-}
-type Ctp10TokenTransferFromResult struct {
-	Operation protocol.Operation `json:"operation"`
-}
-type Ctp10TokenApproveResponse struct {
-	ErrorCode int                     `json:"error_code"`
-	ErrorDesc string                  `json:"error_desc"`
-	Result    Ctp10TokenApproveResult `json:"result"`
-}
-type Ctp10TokenApproveResult struct {
-	Operation protocol.Operation `json:"operation"`
-}
-type Ctp10TokenAssignResponse struct {
-	ErrorCode int                    `json:"error_code"`
-	ErrorDesc string                 `json:"error_desc"`
-	Result    Ctp10TokenAssignResult `json:"result"`
-}
-type Ctp10TokenAssignResult struct {
-	Operation protocol.Operation `json:"operation"`
-}
-type Ctp10TokenChangeOwnerResponse struct {
-	ErrorCode int                         `json:"error_code"`
-	ErrorDesc string                      `json:"error_desc"`
-	Result    Ctp10TokenChangeOwnerResult `json:"result"`
-}
-type Ctp10TokenChangeOwnerResult struct {
-	Operation protocol.Operation `json:"operation"`
-}
 type Input struct {
 	Params Params `json:"params"`
 	Method string `json:"method"`
@@ -687,7 +618,6 @@ type Params struct {
 	Decimals        int64  `json:"decimals"`
 	TotalSupply     string `json:"totalSupply"`
 	Supply          string `json:"supply"`
-	Ctp10TokenOwner string `json:"contractOwner"`
 	To              string `json:"to"`
 	Value           string `json:"value"`
 	From            string `json:"from"`
@@ -695,22 +625,6 @@ type Params struct {
 	Address         string `json:"address"`
 	Owner           string `json:"owner"`
 	Balance         string `json:"balance"`
-}
-type Ctp10TokenCallResponse struct {
-	ErrorCode int                  `json:"error_code"`
-	ErrorDesc string               `json:"error_desc"`
-	Result    Ctp10TokenCallResult `json:"result"`
-}
-type Ctp10TokenCallResult struct {
-	QueryRets []QueryRet `json:"query_rets"`
-}
-type QueryRet struct {
-	Result Ctp10TokenResult `json:"result"`
-	Error  Error            `json:"error"`
-}
-type Ctp10TokenResult struct {
-	Type  string `json:"type"`
-	Value string `json:"value"`
 }
 type Error struct {
 	Data Data `json:"data"`
@@ -729,118 +643,6 @@ type ContractInfo struct {
 	TotalSupply   string `json:"totalSupply"`
 	contractOwner string `json:"contractOwner"`
 	Balance       string `json:"balance"`
-}
-type Ctp10TokenCheckValidResponse struct {
-	ErrorCode int              `json:"error_code"`
-	ErrorDesc string           `json:"error_desc"`
-	Result    CheckValidResult `json:"result"`
-}
-type Ctp10TokenAllowanceResponse struct {
-	ErrorCode int                       `json:"error_code"`
-	ErrorDesc string                    `json:"error_desc"`
-	Result    Ctp10TokenAllowanceResult `json:"result"`
-}
-type Ctp10TokenAllowanceResult struct {
-	Allowance int64 `json:"Allowance"`
-}
-type CallGetInfoResponse struct {
-	ErrorCode int               `json:"error_code"`
-	ErrorDesc string            `json:"error_desc"`
-	Result    CallGetInfoResult `json:"result"`
-}
-type CallGetInfoResult struct {
-	QueryRets []Ctp10TokenGetInfoResponse `json:"query_rets"`
-}
-type Ctp10TokenGetInfoResponse struct {
-	ErrorCode int                     `json:"error_code"`
-	ErrorDesc string                  `json:"error_desc"`
-	Result    Ctp10TokenGetInfoResult `json:"result"`
-}
-type Ctp10TokenGetInfoResult struct {
-	Symbol      string `json:"symbol"`
-	Decimals    int64  `json:"decimals"`
-	TotalSupply int64  `json:"totalSupply"`
-	Name        string `json:"name"`
-}
-type CallGetNameResponse struct {
-	ErrorCode int               `json:"error_code"`
-	ErrorDesc string            `json:"error_desc"`
-	Result    CallGetNameResult `json:"result"`
-}
-type CallGetNameResult struct {
-	QueryRets []Ctp10TokenGetNameResponse `json:"query_rets"`
-}
-type Ctp10TokenGetNameResponse struct {
-	ErrorCode int                     `json:"error_code"`
-	ErrorDesc string                  `json:"error_desc"`
-	Result    Ctp10TokenGetNameResult `json:"result"`
-}
-type Ctp10TokenGetNameResult struct {
-	Name string `json:"name"`
-}
-type CallGetSymbolResponse struct {
-	ErrorCode int                 `json:"error_code"`
-	ErrorDesc string              `json:"error_desc"`
-	Result    CallGetSymbolResult `json:"result"`
-}
-type CallGetSymbolResult struct {
-	QueryRets []Ctp10TokenGetSymbolResponse `json:"query_rets"`
-}
-type Ctp10TokenGetSymbolResponse struct {
-	ErrorCode int                       `json:"error_code"`
-	ErrorDesc string                    `json:"error_desc"`
-	Result    Ctp10TokenGetSymbolResult `json:"result"`
-}
-type Ctp10TokenGetSymbolResult struct {
-	Symbol string `json:"symbol"`
-}
-type CallGetDecimalsResponse struct {
-	ErrorCode int                   `json:"error_code"`
-	ErrorDesc string                `json:"error_desc"`
-	Result    CallGetDecimalsResult `json:"result"`
-}
-type CallGetDecimalsResult struct {
-	QueryRets []Ctp10TokenGetDecimalsResponse `json:"query_rets"`
-}
-type Ctp10TokenGetDecimalsResponse struct {
-	ErrorCode int                         `json:"error_code"`
-	ErrorDesc string                      `json:"error_desc"`
-	Result    Ctp10TokenGetDecimalsResult `json:"result"`
-}
-type Ctp10TokenGetDecimalsResult struct {
-	Decimals int64 `json:"decimals"`
-}
-type CallGetTotalSupplyResponse struct {
-	ErrorCode int                      `json:"error_code"`
-	ErrorDesc string                   `json:"error_desc"`
-	Result    CallGetTotalSupplyResult `json:"result"`
-}
-type CallGetTotalSupplyResult struct {
-	QueryRets []Ctp10TokenGetTotalSupplyResponse `json:"query_rets"`
-}
-type Ctp10TokenGetTotalSupplyResponse struct {
-	ErrorCode int                            `json:"error_code"`
-	ErrorDesc string                         `json:"error_desc"`
-	Result    Ctp10TokenGetTotalSupplyResult `json:"result"`
-}
-type Ctp10TokenGetTotalSupplyResult struct {
-	TotalSupply int64 `json:"totalSupply"`
-}
-type CallGetBalanceResponse struct {
-	ErrorCode int                  `json:"error_code"`
-	ErrorDesc string               `json:"error_desc"`
-	Result    CallGetBalanceResult `json:"result"`
-}
-type CallGetBalanceResult struct {
-	QueryRets []Ctp10TokenGetBalanceResponse `json:"query_rets"`
-}
-type Ctp10TokenGetBalanceResponse struct {
-	ErrorCode int                        `json:"error_code"`
-	ErrorDesc string                     `json:"error_desc"`
-	Result    Ctp10TokenGetBalanceResult `json:"result"`
-}
-type Ctp10TokenGetBalanceResult struct {
-	Balance int64 `json:"balanceOf"`
 }
 type CallContractRequest struct {
 	ContractAddress string `json:"contract_address"`

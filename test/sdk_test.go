@@ -144,7 +144,6 @@ func Test_Block_GetLatestReward(t *testing.T) {
 	if resData.ErrorCode != 0 {
 		t.Errorf(resData.ErrorDesc)
 	} else {
-		t.Log("ValidatorsReward:", resData.Result.ValidatorsReward)
 		t.Log("Test_Block_GetLatestReward succeed", resData.Result)
 	}
 }
@@ -472,112 +471,5 @@ func Test_Contract_GetAddress(t *testing.T) {
 		t.Errorf(resData.ErrorDesc)
 	} else {
 		t.Log("Test_Contract_GetAddress succeed", resData.Result.ContractAddresInfos)
-	}
-}
-
-//ctp10token allowance
-func Test_Ctp10Token_Allowance(t *testing.T) {
-	var reqData model.Ctp10TokenAllowanceRequest
-	var contractAddress string = "adxSqKcX8wGCMKhzNUBoDWfbeQaMhfnGdtyG2"
-	reqData.SetContractAddress(contractAddress)
-	var spender string = "adxSjcujn3y9u9KiNFR4snzvoZe5RmddX3Xyf"
-	reqData.SetSpender(spender)
-	var tokenOwner string = "adxSYvndiFG4zpbLGugX3j93fDn9nWZfWp8Gd"
-	reqData.SetTokenOwner(tokenOwner)
-	resData := testSdk.Token.Ctp10Token.Allowance(reqData)
-	if resData.ErrorCode != 0 {
-		t.Errorf(resData.ErrorDesc)
-	} else {
-		t.Log("Allowance:", resData.Result.Allowance)
-		t.Log("Test_Ctp10Token_Allowance succeed", resData.Result)
-	}
-}
-
-//get ctp10token info
-func Test_Ctp10Token_GetInfo(t *testing.T) {
-	var reqData model.Ctp10TokenGetInfoRequest
-	var contractAddress string = "adxSqKcX8wGCMKhzNUBoDWfbeQaMhfnGdtyG2"
-	reqData.SetContractAddress(contractAddress)
-	resData := testSdk.Token.Ctp10Token.GetInfo(reqData)
-	if resData.ErrorCode != 0 {
-		t.Log(resData)
-		t.Errorf(resData.ErrorDesc)
-	} else {
-		data, _ := json.Marshal(resData.Result)
-		t.Log("info:", string(data))
-		t.Log("Test_Ctp10Token_GetInfo succeed", resData.Result)
-	}
-}
-
-//get ctp10token name
-func Test_Ctp10Token_GetName(t *testing.T) {
-	var reqData model.Ctp10TokenGetNameRequest
-	var contractAddress string = "adxSqKcX8wGCMKhzNUBoDWfbeQaMhfnGdtyG2"
-	reqData.SetContractAddress(contractAddress)
-	resData := testSdk.Token.Ctp10Token.GetName(reqData)
-	if resData.ErrorCode != 0 {
-		t.Errorf(resData.ErrorDesc)
-	} else {
-		t.Log("Name:", resData.Result.Name)
-		t.Log("Test_Ctp10Token_GetName succeed", resData.Result)
-	}
-}
-
-//get ctp10token symbol
-func Test_Ctp10Token_GetSymbol(t *testing.T) {
-	var reqData model.Ctp10TokenGetSymbolRequest
-	var contractAddress string = "adxSqKcX8wGCMKhzNUBoDWfbeQaMhfnGdtyG2"
-	reqData.SetContractAddress(contractAddress)
-	resData := testSdk.Token.Ctp10Token.GetSymbol(reqData)
-	if resData.ErrorCode != 0 {
-		t.Errorf(resData.ErrorDesc)
-	} else {
-		t.Log("Symbol:", resData.Result.Symbol)
-		t.Log("Test_Ctp10Token_GetSymbol succeed", resData.Result)
-	}
-}
-
-//get ctp10token decimals
-func Test_Ctp10Token_GetDecimals(t *testing.T) {
-	var reqData model.Ctp10TokenGetDecimalsRequest
-	var contractAddress string = "adxSqKcX8wGCMKhzNUBoDWfbeQaMhfnGdtyG2"
-	reqData.SetContractAddress(contractAddress)
-	resData := testSdk.Token.Ctp10Token.GetDecimals(reqData)
-	if resData.ErrorCode != 0 {
-		t.Errorf(resData.ErrorDesc)
-	} else {
-		t.Log("Decimals:", resData.Result.Decimals)
-		t.Log("Test_Ctp10Token_GetDecimals succeed", resData.Result)
-	}
-}
-
-//get ctp10token totalsupply
-func Test_Ctp10Token_GetTotalSupply(t *testing.T) {
-	var reqData model.Ctp10TokenGetTotalSupplyRequest
-	var contractAddress string = "adxSqKcX8wGCMKhzNUBoDWfbeQaMhfnGdtyG2"
-	reqData.SetContractAddress(contractAddress)
-	resData := testSdk.Token.Ctp10Token.GetTotalSupply(reqData)
-	if resData.ErrorCode != 0 {
-		t.Errorf(resData.ErrorDesc)
-	} else {
-		t.Log("TotalSupply:", resData.Result.TotalSupply)
-		t.Log("Test_Ctp10Token_GetTotalSupply succeed", resData.Result)
-	}
-}
-
-//get ctp10token balance
-func Test_Ctp10Token_GetBalance(t *testing.T) {
-	var reqData model.Ctp10TokenGetBalanceRequest
-	var contractAddress string = "adxSqKcX8wGCMKhzNUBoDWfbeQaMhfnGdtyG2"
-	reqData.SetContractAddress(contractAddress)
-	var tokenOwner string = "adxSjcujn3y9u9KiNFR4snzvoZe5RmddX3Xyf"
-	reqData.SetTokenOwner(tokenOwner)
-	resData := testSdk.Token.Ctp10Token.GetBalance(reqData)
-	if resData.ErrorCode != 0 {
-		t.Log(resData)
-		t.Errorf(resData.ErrorDesc)
-	} else {
-		t.Log("Balance:", resData.Result.Balance)
-		t.Log("Test_Ctp10Token_GetBalance succeed", resData.Result)
 	}
 }
