@@ -7,7 +7,7 @@ import (
 	"encoding/hex"
 	"errors"
 
-	"github.com/agl/ed25519/edwards25519"
+	"github.com/teserakt-io/golang-ed25519/edwards25519"
 	"github.com/bubicn/bubichain-v4-sdk-go/src/crypto/keypair"
 )
 
