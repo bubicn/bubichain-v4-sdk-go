@@ -224,6 +224,14 @@ type ContractCallResult struct {
 	Stat      Stat                   `json:"stat"`
 	Txs       []Tx                   `json:"txs"`
 }
+type QueryRet struct {
+	Result TokenResult `json:"result"`
+	Error  Error            `json:"error"`
+}
+type TokenResult struct {
+	Type  string `json:"type"`
+	Value string `json:"value"`
+}
 type Stat struct {
 	ApplyTime   int64 `json:"apply_time"`
 	MemoryUsage int64 `json:"memory_usage"`
