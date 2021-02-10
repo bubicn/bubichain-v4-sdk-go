@@ -225,10 +225,10 @@ type ContractCallResult struct {
 	Txs       []Tx                   `json:"txs"`
 }
 type QueryRet struct {
-	Result TokenResult `json:"result"`
+	Result QueryResult `json:"result"`
 	Error  Error            `json:"error"`
 }
-type TokenResult struct {
+type QueryResult struct {
 	Type  string `json:"type"`
 	Value string `json:"value"`
 }
