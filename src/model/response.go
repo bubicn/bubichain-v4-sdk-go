@@ -410,7 +410,7 @@ type Operation struct {
 	PayCoin       PayCoin       `json:"pay_coin"`
 	SetMetadata   SetMetadata   `json:"set_metadata"`
 	SetPrivilege  SetPrivilege  `json:"set_privilege"`
-	Log           Log           `json:"set_privilege"`
+	Log           Log           `json:"log"`
 }
 type CreateAccount struct {
 	DestAddress string        `json:"dest_address"`
