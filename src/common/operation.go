@@ -16,7 +16,7 @@ const (
 	INIT_BALANCE int64 = 20000000
 )
 
-//GetOperations
+// GetOperations
 func GetOperations(operationsList list.List, url string, sourceAddress string) ([]*protocol.Operation, exception.SDKResponse) {
 	var operations []*protocol.Operation
 	for e := operationsList.Front(); e != nil; e = e.Next() {
@@ -153,7 +153,7 @@ func GetOperations(operationsList list.List, url string, sourceAddress string) (
 	return operations, exception.GetSDKRes(exception.SUCCESS)
 }
 
-//activate the account
+// activate the account
 func Activate(reqData model.AccountActivateOperation, url string) model.AccountActivateResponse {
 	var resData model.AccountActivateResponse
 	if reqData.GetSourceAddress() != "" {
@@ -200,7 +200,7 @@ func Activate(reqData model.AccountActivateOperation, url string) model.AccountA
 
 }
 
-//set metadata
+// set metadata
 func SetMetadata(reqData model.AccountSetMetadataOperation) model.AccountSetMetadataResponse {
 	var resData model.AccountSetMetadataResponse
 	if reqData.GetSourceAddress() != "" {
@@ -246,7 +246,7 @@ func SetMetadata(reqData model.AccountSetMetadataOperation) model.AccountSetMeta
 	return resData
 }
 
-//set privilege
+// set privilege
 func SetPrivilege(reqData model.AccountSetPrivilegeOperation) model.AccountSetPrivilegeResponse {
 	var resData model.AccountSetPrivilegeResponse
 	if reqData.GetSourceAddress() != "" {
@@ -332,7 +332,7 @@ func SetPrivilege(reqData model.AccountSetPrivilegeOperation) model.AccountSetPr
 	return resData
 }
 
-//asset issue
+// asset issue
 func AssetIssue(reqData model.AssetIssueOperation) model.AssetIssueResponse {
 	var resData model.AssetIssueResponse
 	if reqData.GetSourceAddress() != "" {
@@ -368,7 +368,7 @@ func AssetIssue(reqData model.AssetIssueOperation) model.AssetIssueResponse {
 	return resData
 }
 
-//asset send
+// asset send
 func AssetSend(reqData model.AssetSendOperation) model.AssetSendResponse {
 	var resData model.AssetSendResponse
 	if !keypair.CheckAddress(reqData.GetIssuer()) {
@@ -415,7 +415,7 @@ func AssetSend(reqData model.AssetSendOperation) model.AssetSendResponse {
 	return resData
 }
 
-//gas send
+// gas send
 func GasSend(reqData model.GasSendOperation) model.GasSendResponse {
 	var resData model.GasSendResponse
 	if reqData.GetAmount() < 0 {
@@ -451,7 +451,7 @@ func GasSend(reqData model.GasSendOperation) model.GasSendResponse {
 	return resData
 }
 
-//contract create
+// contract create
 func ContractCreate(reqData model.ContractCreateOperation) model.ContractCreateResponse {
 	var resData model.ContractCreateResponse
 	if reqData.GetSourceAddress() != "" {
@@ -482,7 +482,7 @@ func ContractCreate(reqData model.ContractCreateOperation) model.ContractCreateR
 			CreateAccount: &protocol.OperationCreateAccount{
 				Contract: &protocol.Contract{
 					Payload: reqData.GetPayload(),
-					ContractType: reqData.GetContractType(),
+					Type:    protocol.Contract_ContractType(reqData.GetContractType()),
 				},
 				InitBalance: reqData.GetInitBalance(),
 				InitInput:   reqData.GetInitInput(),
@@ -499,7 +499,7 @@ func ContractCreate(reqData model.ContractCreateOperation) model.ContractCreateR
 	return resData
 }
 
-//invoke by asset
+// invoke by asset
 func InvokeByAsset(reqData model.ContractInvokeByAssetOperation) model.ContractInvokeByGasResponse {
 	var resData model.ContractInvokeByGasResponse
 	if reqData.GetSourceAddress() != "" {
@@ -568,7 +568,7 @@ func InvokeByAsset(reqData model.ContractInvokeByAssetOperation) model.ContractI
 	return resData
 }
 
-//invoke by gas
+// invoke by gas
 func InvokeByGas(reqData model.ContractInvokeByGasOperation) model.ContractInvokeByGasResponse {
 	var resData model.ContractInvokeByGasResponse
 	if reqData.GetSourceAddress() != "" {
@@ -610,7 +610,7 @@ func InvokeByGas(reqData model.ContractInvokeByGasOperation) model.ContractInvok
 	return resData
 }
 
-//log create
+// log create
 func LogCreate(reqData model.LogCreateOperation) model.LogCreateResponse {
 	var resData model.LogCreateResponse
 	if reqData.GetSourceAddress() != "" {
