@@ -482,6 +482,7 @@ func ContractCreate(reqData model.ContractCreateOperation) model.ContractCreateR
 			CreateAccount: &protocol.OperationCreateAccount{
 				Contract: &protocol.Contract{
 					Payload: reqData.GetPayload(),
+					ContractType: reqData.GetContractType(),
 				},
 				InitBalance: reqData.GetInitBalance(),
 				InitInput:   reqData.GetInitInput(),

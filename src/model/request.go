@@ -746,6 +746,7 @@ type ContractCreateOperation struct {
 	sourceAddress string
 	initBalance   int64
 	payload       string
+	contractType  int
 	initInput     string
 	metadata      string
 	operationType int
@@ -768,6 +769,12 @@ func (reqData *ContractCreateOperation) SetPayload(Payload string) {
 }
 func (reqData *ContractCreateOperation) GetPayload() string {
 	return reqData.payload
+}
+func (reqData *ContractCreateOperation) SetContractType(ContractType int) {
+	reqData.contractType = ContractType
+}
+func (reqData *ContractCreateOperation) GetContractType() int {
+	return reqData.contractType
 }
 func (reqData *ContractCreateOperation) SetInitInput(InitInput string) {
 	reqData.initInput = InitInput
