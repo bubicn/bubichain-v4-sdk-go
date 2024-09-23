@@ -374,7 +374,7 @@ func (block *BlockOperation) GetReward(reqData model.BlockGetRewardRequest) mode
 		}
 
 		var rewardsData model.RewardsResult
-		err = json.Unmarshal([]byte(resDataCall.Result.QueryRets[0].Result.Value), &rewardsData)
+		err = json.Unmarshal([]byte(resDataCall.Result.QueryRets[0].Result.Data), &rewardsData)
 		if err != nil {
 			resData.ErrorCode = exception.SYSTEM_ERROR
 			resData.ErrorDesc = exception.GetErrDesc(resData.ErrorCode)
@@ -453,7 +453,7 @@ func (block *BlockOperation) GetLatestReward() model.BlockGetLatestRewardRespons
 		}
 
 		var rewardsData model.RewardsResult
-		err = json.Unmarshal([]byte(resDataCall.Result.QueryRets[0].Result.Value), &rewardsData)
+		err = json.Unmarshal([]byte(resDataCall.Result.QueryRets[0].Result.Data), &rewardsData)
 		if err != nil {
 			resData.ErrorCode = exception.SYSTEM_ERROR
 			resData.ErrorDesc = exception.GetErrDesc(resData.ErrorCode)

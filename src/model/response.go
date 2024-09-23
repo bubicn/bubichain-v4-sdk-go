@@ -18,7 +18,7 @@ type Signature struct {
 }
 
 // account
-//CheckValid
+// CheckValid
 type AccountCheckValidResponse struct {
 	ErrorCode int              `json:"error_code"`
 	ErrorDesc string           `json:"error_desc"`
@@ -28,7 +28,7 @@ type CheckValidResult struct {
 	IsValid bool
 }
 
-//CheckActivated
+// CheckActivated
 type AccountCheckActivatedResponse struct {
 	ErrorCode int                  `json:"error_code"`
 	ErrorDesc string               `json:"error_desc"`
@@ -38,7 +38,7 @@ type CheckActivatedResult struct {
 	IsActivated bool
 }
 
-//Create
+// Create
 type AccountCreateResponse struct {
 	ErrorCode int                 `json:"error_code"`
 	ErrorDesc string              `json:"error_desc"`
@@ -175,7 +175,7 @@ type AssetGetInfoResult struct {
 	Assets []Asset `json:"assets"`
 }
 
-//Gas
+// Gas
 type GasSendResponse struct {
 	ErrorCode int           `json:"error_code"`
 	ErrorDesc string        `json:"error_desc"`
@@ -185,7 +185,7 @@ type GasSendResult struct {
 	Operation protocol.Operation `json:"operation"`
 }
 
-//Contract
+// Contract
 type ContractCreateResponse struct {
 	ErrorCode int                  `json:"error_code"`
 	ErrorDesc string               `json:"error_desc"`
@@ -226,11 +226,12 @@ type ContractCallResult struct {
 }
 type QueryRet struct {
 	Result QueryResult `json:"result"`
-	Error  Error            `json:"error"`
+	Error  Error       `json:"error"`
 }
 type QueryResult struct {
-	Type  string `json:"type"`
-	Value string `json:"value"`
+	Data    string `json:"data"`
+	Return  string `json:"return"`
+	GasUsed int    `json:"gasused"`
 }
 type Stat struct {
 	ApplyTime   int64 `json:"apply_time"`
@@ -370,7 +371,7 @@ type GetInfoResults struct {
 	Transactions []Transactioninfo `json:"transactions"`
 }
 
-//Block
+// Block
 type BlockGetTransactionResponse struct {
 	ErrorCode int                      `json:"error_code"`
 	ErrorDesc string                   `json:"error_desc"`
@@ -466,7 +467,7 @@ type GetInfoHeader struct {
 	Version   int64 `json:"version"`
 }
 
-//GetLatest
+// GetLatest
 type BlockGetLatestResponse struct {
 	ErrorCode int             `json:"error_code"`
 	ErrorDesc string          `json:"error_desc"`
@@ -482,7 +483,7 @@ type GetLatestHeader struct {
 	Version   int64 `json:"version"`
 }
 
-//GetNumber
+// GetNumber
 type BlockGetNumberResponse struct {
 	ErrorCode int             `json:"error_code"`
 	ErrorDesc string          `json:"error_desc"`
@@ -495,7 +496,7 @@ type GetNumberHeader struct {
 	BlockNumber int64 `json:"seq"`
 }
 
-//CheckStatus
+// CheckStatus
 type BlockCheckStatusResponse struct {
 	ErrorCode int               `json:"error_code"`
 	ErrorDesc string            `json:"error_desc"`
@@ -517,7 +518,7 @@ type Validator struct {
 	PledgeCoinAmount int64  `json:"pledge_coin_amount"`
 }
 
-//GetLatestValidators
+// GetLatestValidators
 type BlockGetLatestValidatorsResponse struct {
 	ErrorCode int                 `json:"error_code"`
 	ErrorDesc string              `json:"error_desc"`
@@ -554,7 +555,7 @@ type GetRewardResult struct {
 	Kols       map[string][]interface{} `json:"kols"`
 }
 
-//GetLatestReward
+// GetLatestReward
 type WebBlockGetLatestRewardResponse struct {
 	ErrorCode int                `json:"error_code"`
 	ErrorDesc string             `json:"error_desc"`
@@ -590,7 +591,7 @@ type Fees struct {
 	GasPrice    int64 `json:"gas_price"`
 }
 
-//GetLatestFees
+// GetLatestFees
 type BlockGetLatestFeesResponse struct {
 	ErrorCode int                 `json:"error_code"`
 	ErrorDesc string              `json:"error_desc"`
@@ -601,7 +602,7 @@ type GetLatestFeesResult struct {
 }
 
 // sdk
-//Init
+// Init
 type SDKInitResponse struct {
 	ErrorCode int    `json:"error_code"`
 	ErrorDesc string `json:"error_desc"`
@@ -620,19 +621,19 @@ type Input struct {
 	Method string `json:"method"`
 }
 type Params struct {
-	Ctp             string `json:"ctp"`
-	Name            string `json:"name"`
-	Symbol          string `json:"symbol"`
-	Decimals        int64  `json:"decimals"`
-	TotalSupply     string `json:"totalSupply"`
-	Supply          string `json:"supply"`
-	To              string `json:"to"`
-	Value           string `json:"value"`
-	From            string `json:"from"`
-	Spender         string `json:"spender"`
-	Address         string `json:"address"`
-	Owner           string `json:"owner"`
-	Balance         string `json:"balance"`
+	Ctp         string `json:"ctp"`
+	Name        string `json:"name"`
+	Symbol      string `json:"symbol"`
+	Decimals    int64  `json:"decimals"`
+	TotalSupply string `json:"totalSupply"`
+	Supply      string `json:"supply"`
+	To          string `json:"to"`
+	Value       string `json:"value"`
+	From        string `json:"from"`
+	Spender     string `json:"spender"`
+	Address     string `json:"address"`
+	Owner       string `json:"owner"`
+	Balance     string `json:"balance"`
 }
 type Error struct {
 	Data Data `json:"data"`
