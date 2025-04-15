@@ -8,7 +8,7 @@ import (
 const Conversion float64 = 100000000
 const Payload string = "'use strict';let globalAttribute={};function globalAttributeKey(){return'global_attribute';}function loadGlobalAttribute(){if(Object.keys(globalAttribute).length===0){let value=storageLoad(globalAttributeKey());assert(value!==false,'Get global attribute from metadata failed.');globalAttribute=JSON.parse(value);}}function storeGlobalAttribute(){let value=JSON.stringify(globalAttribute);storageStore(globalAttributeKey(),value);}function powerOfBase10(exponent){let i=0;let power=1;while(i<exponent){power=power*10;i=i+1;}return power;}function makeBalanceKey(address){return'balance_'+address;}function makeAllowanceKey(owner,spender){return'allow_'+owner+'_to_'+spender;}function valueCheck(value){if(value.startsWith('-')||value==='0'){return false;}return true;}function approve(spender,value){assert(addressCheck(spender)===true,'Arg-spender is not a valid address.');assert(stoI64Check(value)===true,'Arg-value must be alphanumeric.');assert(valueCheck(value)===true,'Arg-value must be positive number.');let key=makeAllowanceKey(sender,spender);storageStore(key,value);tlog('approve',sender,spender,value);return true;}function allowance(owner,spender){assert(addressCheck(owner)===true,'Arg-owner is not a valid address.');assert(addressCheck(spender)===true,'Arg-spender is not a valid address.');let key=makeAllowanceKey(owner,spender);let value=storageLoad(key);assert(value!==false,'Get allowance '+owner+' to '+spender+' from metadata failed.');return value;}function transfer(to,value){assert(addressCheck(to)===true,'Arg-to is not a valid address.');assert(stoI64Check(value)===true,'Arg-value must be alphanumeric.');assert(valueCheck(value)===true,'Arg-value must be positive number.');if(sender===to){tlog('transfer',sender,to,value);return true;}let senderKey=makeBalanceKey(sender);let senderValue=storageLoad(senderKey);assert(senderValue!==false,'Get balance of '+sender+' from metadata failed.');assert(int64Compare(senderValue,value)>=0,'Balance:'+senderValue+' of sender:'+sender+' < transfer value:'+value+'.');let toKey=makeBalanceKey(to);let toValue=storageLoad(toKey);toValue=(toValue===false)?value:int64Add(toValue,value);storageStore(toKey,toValue);senderValue=int64Sub(senderValue,value);storageStore(senderKey,senderValue);tlog('transfer',sender,to,value);return true;}function assign(to,value){assert(addressCheck(to)===true,'Arg-to is not a valid address.');assert(stoI64Check(value)===true,'Arg-value must be alphanumeric.');assert(valueCheck(value)===true,'Arg-value must be positive number.');if(thisAddress===to){tlog('assign',to,value);return true;}loadGlobalAttribute();assert(sender===globalAttribute.contractOwner,sender+' has no permission to assign contract balance.');assert(int64Compare(globalAttribute.balance,value)>=0,'Balance of contract:'+globalAttribute.balance+' < assign value:'+value+'.');let toKey=makeBalanceKey(to);let toValue=storageLoad(toKey);toValue=(toValue===false)?value:int64Add(toValue,value);storageStore(toKey,toValue);globalAttribute.balance=int64Sub(globalAttribute.balance,value);storeGlobalAttribute();tlog('assign',to,value);return true;}function transferFrom(from,to,value){assert(addressCheck(from)===true,'Arg-from is not a valid address.');assert(addressCheck(to)===true,'Arg-to is not a valid address.');assert(stoI64Check(value)===true,'Arg-value must be alphanumeric.');assert(valueCheck(value)===true,'Arg-value must be positive number.');if(from===to){tlog('transferFrom',sender,from,to,value);return true;}let fromKey=makeBalanceKey(from);let fromValue=storageLoad(fromKey);assert(fromValue!==false,'Get value failed, maybe '+from+' has no value.');assert(int64Compare(fromValue,value)>=0,from+' balance:'+fromValue+' < transfer value:'+value+'.');let allowValue=allowance(from,sender);assert(int64Compare(allowValue,value)>=0,'Allowance value:'+allowValue+' < transfer value:'+value+' from '+from+' to '+to+'.');let toKey=makeBalanceKey(to);let toValue=storageLoad(toKey);toValue=(toValue===false)?value:int64Add(toValue,value);storageStore(toKey,toValue);fromValue=int64Sub(fromValue,value);storageStore(fromKey,fromValue);let allowKey=makeAllowanceKey(from,sender);allowValue=int64Sub(allowValue,value);storageStore(allowKey,allowValue);tlog('transferFrom',sender,from,to,value);return true;}function changeOwner(address){assert(addressCheck(address)===true,'Arg-address is not a valid address.');loadGlobalAttribute();assert(sender===globalAttribute.contractOwner,sender+' has no permission to modify contract ownership.');globalAttribute.contractOwner=address;storeGlobalAttribute();tlog('changeOwner',sender,address);}function name(){return globalAttribute.name;}function symbol(){return globalAttribute.symbol;}function decimals(){return globalAttribute.decimals;}function totalSupply(){return globalAttribute.totalSupply;}function ctp(){return globalAttribute.ctp;}function contractInfo(){return globalAttribute;}function balanceOf(address){assert(addressCheck(address)===true,'Arg-address is not a valid address.');if(address===globalAttribute.contractOwner||address===thisAddress){return globalAttribute.balance;}let key=makeBalanceKey(address);let value=storageLoad(key);assert(value!==false,'Get balance of '+address+' from metadata failed.');return value;}function init(input_str){let input=JSON.parse(input_str);assert(stoI64Check(input.params.supply)===true&&typeof input.params.name==='string'&&typeof input.params.symbol==='string'&&typeof input.params.decimals==='number','Args check failed.');globalAttribute.ctp='1.0';globalAttribute.name=input.params.name;globalAttribute.symbol=input.params.symbol;globalAttribute.decimals=input.params.decimals;globalAttribute.totalSupply=int64Mul(input.params.supply,powerOfBase10(globalAttribute.decimals));globalAttribute.contractOwner=sender;globalAttribute.balance=globalAttribute.totalSupply;storageStore(globalAttributeKey(),JSON.stringify(globalAttribute));}function main(input_str){let input=JSON.parse(input_str);if(input.method==='transfer'){transfer(input.params.to,input.params.value);}else if(input.method==='transferFrom'){transferFrom(input.params.from,input.params.to,input.params.value);}else if(input.method==='approve'){approve(input.params.spender,input.params.value);}else if(input.method==='assign'){assign(input.params.to,input.params.value);}else if(input.method==='changeOwner'){changeOwner(input.params.address);}else{throw'<unidentified operation type>';}}function query(input_str){loadGlobalAttribute();let result={};let input=JSON.parse(input_str);if(input.method==='name'){result.name=name();}else if(input.method==='symbol'){result.symbol=symbol();}else if(input.method==='decimals'){result.decimals=decimals();}else if(input.method==='totalSupply'){result.totalSupply=totalSupply();}else if(input.method==='ctp'){result.ctp=ctp();}else if(input.method==='contractInfo'){result.contractInfo=contractInfo();}else if(input.method==='balanceOf'){result.balance=balanceOf(input.params.address);}else if(input.method==='allowance'){result.allowance=allowance(input.params.owner,input.params.spender);}else{throw'<unidentified operation type>';}log(result);return JSON.stringify(result);}"
 
-//Activate
+// Activate
 type AccountCheckValidRequest struct {
 	address string
 }
@@ -20,7 +20,7 @@ func (reqData *AccountCheckValidRequest) GetAddress() string {
 	return reqData.address
 }
 
-//GetInfo
+// GetInfo
 type AccountGetInfoRequest struct {
 	address string
 }
@@ -32,7 +32,7 @@ func (reqData *AccountGetInfoRequest) GetAddress() string {
 	return reqData.address
 }
 
-//GetNonce
+// GetNonce
 type AccountGetNonceRequest struct {
 	address string
 }
@@ -44,7 +44,7 @@ func (reqData *AccountGetNonceRequest) GetAddress() string {
 	return reqData.address
 }
 
-//GetBalance
+// GetBalance
 type AccountGetBalanceRequest struct {
 	address string
 }
@@ -56,7 +56,7 @@ func (reqData *AccountGetBalanceRequest) GetAddress() string {
 	return reqData.address
 }
 
-//GetAssets
+// GetAssets
 type AccountGetAssetsRequest struct {
 	address string
 }
@@ -68,7 +68,7 @@ func (reqData *AccountGetAssetsRequest) GetAddress() string {
 	return reqData.address
 }
 
-//MetadataRequest
+// MetadataRequest
 type AccountGetMetadataRequest struct {
 	address string
 	key     string
@@ -87,7 +87,7 @@ func (reqData *AccountGetMetadataRequest) GetKey() string {
 	return reqData.key
 }
 
-//GetInfo
+// GetInfo
 type AccountCheckActivatedRequest struct {
 	address string
 }
@@ -99,7 +99,7 @@ func (reqData *AccountCheckActivatedRequest) GetAddress() string {
 	return reqData.address
 }
 
-//GetInfo
+// GetInfo
 type AssetGetInfoRequest struct {
 	address string `json:"address"`
 	code    string `json:"code"`
@@ -138,7 +138,7 @@ func (reqData *ContractCheckValidRequest) GetAddress() string {
 	return reqData.address
 }
 
-//GetInfo
+// GetInfo
 type ContractGetInfoRequest struct {
 	address string
 }
@@ -200,7 +200,7 @@ func (reqData *TransactionEvaluateFeeRequest) GetOperations() list.List {
 	return reqData.operations
 }
 
-//Call
+// Call
 type ContractCallRequest struct {
 	sourceAddress   string
 	contractAddress string
@@ -261,7 +261,7 @@ func (reqData *ContractCallRequest) GetOptType() int64 {
 	return reqData.optType
 }
 
-//GetAddress
+// GetAddress
 type ContractGetAddressRequest struct {
 	hash string
 }
@@ -273,7 +273,7 @@ func (reqData *ContractGetAddressRequest) GetHash() string {
 	return reqData.hash
 }
 
-//Sign
+// Sign
 type TransactionSignRequest struct {
 	blob        string
 	privateKeys []string
@@ -292,7 +292,34 @@ func (reqData *TransactionSignRequest) GetPrivateKeys() []string {
 	return reqData.privateKeys
 }
 
-//Submit
+// Verify
+type TransactionVerifyRequest struct {
+	blob      string
+	publicKey string
+	signature string
+}
+
+func (reqData *TransactionVerifyRequest) SetBlob(Blob string) {
+	reqData.blob = Blob
+}
+func (reqData *TransactionVerifyRequest) GetBlob() string {
+	return reqData.blob
+}
+func (reqData *TransactionVerifyRequest) SetPublicKey(PublicKey string) {
+	reqData.publicKey = PublicKey
+}
+func (reqData *TransactionVerifyRequest) GetPublicKey() string {
+	return reqData.publicKey
+}
+
+func (reqData *TransactionVerifyRequest) SetSignature(Signature string) {
+	reqData.signature = Signature
+}
+func (reqData *TransactionVerifyRequest) GetSignature() string {
+	return reqData.signature
+}
+
+// Submit
 type TransactionSubmitRequests struct {
 	Items []TransactionSubmitRequest
 }
@@ -314,7 +341,7 @@ func (reqData *TransactionSubmitRequest) GetSignatures() []Signature {
 	return reqData.signatures
 }
 
-//GetInfo
+// GetInfo
 type TransactionGetInfoRequest struct {
 	hash string
 }
@@ -326,7 +353,7 @@ func (reqData *TransactionGetInfoRequest) GetHash() string {
 	return reqData.hash
 }
 
-//GetTransaction
+// GetTransaction
 type BlockGetTransactionRequest struct {
 	blockNumber int64
 }
@@ -338,7 +365,7 @@ func (reqData *BlockGetTransactionRequest) GetBlockNumber() int64 {
 	return reqData.blockNumber
 }
 
-//GetInfo
+// GetInfo
 type BlockGetInfoRequest struct {
 	blockNumber int64
 }
@@ -350,7 +377,7 @@ func (reqData *BlockGetInfoRequest) GetBlockNumber() int64 {
 	return reqData.blockNumber
 }
 
-//GetValidators
+// GetValidators
 type BlockGetValidatorsRequest struct {
 	blockNumber int64
 }
@@ -362,7 +389,7 @@ func (reqData *BlockGetValidatorsRequest) GetBlockNumber() int64 {
 	return reqData.blockNumber
 }
 
-//GetReward
+// GetReward
 type BlockGetRewardRequest struct {
 	blockNumber int64
 }
@@ -374,7 +401,7 @@ func (reqData *BlockGetRewardRequest) GetBlockNumber() int64 {
 	return reqData.blockNumber
 }
 
-//GetFees
+// GetFees
 type BlockGetFeesRequest struct {
 	blockNumber int64
 }
@@ -397,7 +424,7 @@ func (reqData *SDKInitRequest) GetUrl() string {
 	return reqData.url
 }
 
-//TransactionBuildBlob
+// TransactionBuildBlob
 type TransactionBuildBlobRequest struct {
 	sourceAddress string
 	nonce         int64
@@ -459,7 +486,7 @@ type BaseOperation interface {
 	Get() (Type int)
 }
 
-//AccountActivate
+// AccountActivate
 type AccountActivateOperation struct {
 	sourceAddress string
 	destAddress   string
@@ -499,7 +526,7 @@ func (reqData AccountActivateOperation) Get() int {
 	return reqData.operationType
 }
 
-//SetMetadata
+// SetMetadata
 type AccountSetMetadataOperation struct {
 	sourceAddress string
 	key           string
@@ -553,7 +580,7 @@ func (reqData AccountSetMetadataOperation) Get() int {
 	return reqData.operationType
 }
 
-//SetPrivilege
+// SetPrivilege
 type AccountSetPrivilegeOperation struct {
 	sourceAddress  string
 	masterWeight   string
@@ -607,7 +634,7 @@ func (reqData AccountSetPrivilegeOperation) Get() int {
 	return reqData.operationType
 }
 
-//Issue
+// Issue
 type AssetIssueOperation struct {
 	sourceAddress string
 	code          string
@@ -647,7 +674,7 @@ func (reqData AssetIssueOperation) Get() int {
 	return reqData.operationType
 }
 
-//AssetSend
+// AssetSend
 type AssetSendOperation struct {
 	sourceAddress string
 	destAddress   string
@@ -701,7 +728,7 @@ func (reqData AssetSendOperation) Get() int {
 	return reqData.operationType
 }
 
-//GasSend
+// GasSend
 type GasSendOperation struct {
 	sourceAddress string
 	destAddress   string
@@ -741,7 +768,7 @@ func (reqData GasSendOperation) Get() int {
 	return reqData.operationType
 }
 
-//Create
+// Create
 type ContractCreateOperation struct {
 	sourceAddress string
 	initBalance   int64
@@ -795,7 +822,7 @@ func (reqData ContractCreateOperation) Get() int {
 	return reqData.operationType
 }
 
-//InvokeByAsset
+// InvokeByAsset
 type ContractInvokeByAssetOperation struct {
 	sourceAddress   string
 	contractAddress string
@@ -856,7 +883,7 @@ func (reqData ContractInvokeByAssetOperation) Get() int {
 	return reqData.operationType
 }
 
-//InvokeByGas
+// InvokeByGas
 type ContractInvokeByGasOperation struct {
 	sourceAddress   string
 	contractAddress string
@@ -903,7 +930,7 @@ func (reqData ContractInvokeByGasOperation) Get() int {
 	return reqData.operationType
 }
 
-//Log
+// Log
 type LogCreateOperation struct {
 	sourceAddress string
 	topic         string
