@@ -256,7 +256,7 @@ func (transaction *TransactionOperation) EvaluateFee(reqData model.TransactionEv
 	}
 }
 
-// sign
+// sign tx
 func (transaction *TransactionOperation) Sign(reqData model.TransactionSignRequest) model.TransactionSignResponse {
 	var resData model.TransactionSignResponse
 	if reqData.GetBlob() == "" {
@@ -315,6 +315,78 @@ func (transaction *TransactionOperation) Sign(reqData model.TransactionSignReque
 	}
 	resData.Result.Signatures = signatures
 	resData.ErrorCode = exception.SUCCESS
+	return resData
+}
+
+// sign string
+func (transaction *TransactionOperation) SignStr(reqData model.TransactionSignRequest) model.TransactionSignResponse {
+	var resData model.TransactionSignResponse
+	if reqData.GetBlob() == "" {
+		SDKRes := exception.GetSDKRes(exception.INVALID_BLOB_ERROR)
+		resData.ErrorCode = SDKRes.ErrorCode
+		resData.ErrorDesc = SDKRes.ErrorDesc
+		return resData
+	}
+	if reqData.GetPrivateKeys() == nil {
+		SDKRes := exception.GetSDKRes(exception.PRIVATEKEY_NULL_ERROR)
+		resData.ErrorCode = SDKRes.ErrorCode
+		resData.ErrorDesc = SDKRes.ErrorDesc
+		return resData
+	}
+	for i := range reqData.GetPrivateKeys() {
+		if !keypair.CheckPrivateKey(reqData.GetPrivateKeys()[i]) {
+			SDKRes := exception.GetSDKRes(exception.PRIVATEKEY_ONE_ERROR)
+			resData.ErrorCode = SDKRes.ErrorCode
+			resData.ErrorDesc = SDKRes.ErrorDesc
+			return resData
+		}
+	}
+	signatures := make([]model.Signature, len(reqData.GetPrivateKeys()))
+	var err error
+	for i := range reqData.GetPrivateKeys() {
+		signatures[i].PublicKey, err = keypair.GetEncPublicKey(reqData.GetPrivateKeys()[i])
+		if err != nil {
+			SDKRes := exception.GetSDKRes(exception.GET_ENCPUBLICKEY_ERROR)
+			resData.ErrorCode = SDKRes.ErrorCode
+			resData.ErrorDesc = SDKRes.ErrorDesc
+			return resData
+		}
+	}
+	TransactionBlob, err := hex.DecodeString(reqData.GetBlob())
+	if err != nil {
+		SDKRes := exception.GetSDKRes(exception.INVALID_BLOB_ERROR)
+		resData.ErrorCode = SDKRes.ErrorCode
+		resData.ErrorDesc = SDKRes.ErrorDesc
+		return resData
+	}
+
+	for i := range reqData.GetPrivateKeys() {
+		signatures[i].SignData, err = signature.Sign(reqData.GetPrivateKeys()[i], TransactionBlob)
+		if err != nil {
+			SDKRes := exception.GetSDKRes(exception.SIGN_ERROR)
+			resData.ErrorCode = SDKRes.ErrorCode
+			resData.ErrorDesc = SDKRes.ErrorDesc
+			return resData
+		}
+	}
+	resData.Result.Signatures = signatures
+	resData.ErrorCode = exception.SUCCESS
+	return resData
+}
+
+// verify
+func (transaction *TransactionOperation) Verify(reqData model.TransactionVerifyRequest) model.TransactionVerifyResponse {
+	var resData model.TransactionVerifyResponse
+	var err error
+	message, err := hex.DecodeString(reqData.GetBlob())
+	if err != nil {
+		SDKRes := exception.GetSDKRes(exception.INVALID_BLOB_ERROR)
+		resData.ErrorCode = SDKRes.ErrorCode
+		resData.ErrorDesc = SDKRes.ErrorDesc
+		return resData
+	}
+
+	resData.IsValid = signature.Verify(reqData.GetPublicKey(), message, reqData.GetSignature())
 	return resData
 }
 

@@ -338,6 +338,11 @@ type TransactionSignResponse struct {
 	ErrorDesc string     `json:"error_desc"`
 	Result    SignResult `json:"result"`
 }
+type TransactionVerifyResponse struct {
+	ErrorCode int    `json:"error_code"`
+	ErrorDesc string `json:"error_desc"`
+	IsValid   bool   `json:"result"`
+}
 type SignResult struct {
 	Signatures []Signature `json:"signatures"`
 }

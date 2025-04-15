@@ -283,7 +283,7 @@ resDataSubmit := testSdk.Transaction.Submit(reqData)
    var destAddress string = "adxSgTxU1awVzNUeR8xcnd3K75XKU8ziNHcWW"
    reqDataOperation.SetAmount(amount)
    reqDataOperation.SetDestAddress(destAddress)
-
+   
    var reqDataBlob model.TransactionBuildBlobRequest
    var sourceAddressBlob string = "adxSYQ8iMyZ7Dkj1oX1kjGMV55WXvoPKcLEK3"
    reqDataBlob.SetSourceAddress(sourceAddressBlob)
@@ -294,7 +294,7 @@ resDataSubmit := testSdk.Transaction.Submit(reqData)
    var nonce int64 = 88
    reqDataBlob.SetNonce(nonce)
    reqDataBlob.SetOperation(reqDataOperation)
-
+   
    resDataBlob := testSdk.Transaction.BuildBlob(reqDataBlob)
    if resDataBlob.ErrorCode == 0 {
       fmt.Println("Blob:", resDataBlob.Result)
@@ -348,7 +348,7 @@ resDataSubmit := testSdk.Transaction.Submit(reqData)
    reqDataOperation.SetAmount(amount)
    var destAddress string = "adxSgTxU1awVzNUeR8xcnd3K75XKU8ziNHcWW"
    reqDataOperation.SetDestAddress(destAddress)
-
+   
    var reqDataEvaluate model.TransactionEvaluateFeeRequest
    var sourceAddress string = "adxSYQ8iMyZ7Dkj1oX1kjGMV55WXvoPKcLEK3"
    reqDataEvaluate.SetSourceAddress(sourceAddress)
@@ -411,6 +411,55 @@ resDataSubmit := testSdk.Transaction.Submit(reqData)
    resDataSign := testSdk.Transaction.Sign(reqData)
    if resDataSign.ErrorCode == 0 {
       fmt.Println("Sign:", resDataSign.Result)
+   }
+   ```
+
+### signStr
+
+- **接口说明**
+
+   该接口用于实现任意字符的签名
+
+- **调用方法**
+
+  `SignStr(model.TransactionSignRequest) model.TransactionSignResponse;`
+
+- **请求参数**
+
+   参数      |     类型     |        描述       
+   ----------- | ------------ | ---------------- 
+   blob|String|必填，待签名的十六进制字符串
+   privateKeys|`[]`String|必填，私钥列表
+
+
+- **响应数据**
+
+   参数      |     类型     |        描述       
+   ----------- | ------------ | ---------------- 
+   signatures|`[]`[Signature](#signature)|签名后的数据列表
+
+- **错误码**
+
+   异常       |     错误码   |   描述  
+   -----------  | ----------- | -------- 
+   INVALID_BLOB_ERROR|11056|Invalid blob
+   PRIVATEKEY_NULL_ERROR|11057|PrivateKeys cannot be empty
+   PRIVATEKEY_ONE_ERROR|11058|One of privateKeys is invalid
+   GET_ENCPUBLICKEY_ERROR|14000|The function ‘GetEncPublicKey’ failed
+   SIGN_ERROR|14001|The function ‘Sign’ failed
+   SYSTEM_ERROR|20000|System error
+
+- **示例**
+
+   ```go
+   PrivateKey := []string{"privbUPxs6QGkJaNdgWS2hisny6ytx1g833cD7V9C3YET9mJ25wdcq6h"}
+   var reqData model.TransactionSignRequest
+   var message string = "E5B883E6AF94E7A791E68A80E585ACE58FB8"
+   reqData.SetBlob(message)
+   reqData.SetPrivateKeys(PrivateKey)
+   resDataSign := testSdk.Transaction.SignStr(reqData)
+   if resDataSign.ErrorCode == 0 {
+      fmt.Println("SignStr:", resDataSign.Result)
    }
    ```
 
@@ -1170,7 +1219,7 @@ metadata      |   String |  选填，备注
    // 初始化请求参数
    var reqData model.ContractGetAddressRequest();
    reqData.SetAddress("44246c5ba1b8b835a5cbc29bdc9454cdb9a9d049870e41227f2dcfbcf7a07689");
-
+   
    resData := sdk.Contract.GetAddress(reqData);
    if resData.ErrorCode == 0 {
    fmt.Println("Address:", resData.Result.Address);
@@ -1232,7 +1281,7 @@ metadata      |   String |  选填，备注
    var input string = "input"
    var optType int64 = 2
    var code string = "HNC"
-
+   
    reqData.SetContractAddress(contractAddress)
    reqData.SetContractBalance(contractBalance)
    reqData.SetFeeLimit(feeLimit)
@@ -1241,7 +1290,7 @@ metadata      |   String |  选填，备注
    reqData.SetOptType(optType)
    reqData.SetCode(code)
    resData := testSdk.Contract.Call(reqData)
-
+   
    if resData.ErrorCode != 0 {
       t.Errorf(resData.ErrorDesc)
    } else {
