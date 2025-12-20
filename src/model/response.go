@@ -676,3 +676,38 @@ type RewardsGetInput struct {
 type RewardsResult struct {
 	Rewards GetRewardResult `json:"rewards"`
 }
+
+// EvidenceStore
+
+type EvidenceStoreResponse struct {
+	ErrorCode int                 `json:"error_code"`
+	ErrorDesc string              `json:"error_desc"`
+	Result    EvidenceStoreResult `json:"result"`
+}
+
+type EvidenceStoreResult struct {
+	Hash string `json:"hash"`
+}
+
+// EvidenceGet
+
+type EvidenceGetResponse struct {
+	ErrorCode int               `json:"error_code"`
+	ErrorDesc string            `json:"error_desc"`
+	Result    EvidenceGetResult `json:"result"`
+}
+
+type EvidenceGetResult struct {
+	Hash      string                `json:"hash"`
+	LedgerSeq int64                 `json:"ledgerSeq"`
+	CloseTime int64                 `json:"closeTime"`
+	Content   EvidenceContentResult `json:"content"`
+}
+
+type EvidenceContentResult struct {
+	Key       string `json:"key"`
+	Content   string `json:"content"`
+	Timestamp int64  `json:"timestamp"`
+	Signature string `json:"signature"`
+	PublicKey string `json:"publicKey"`
+}

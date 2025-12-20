@@ -146,7 +146,7 @@ var errm = map[int]string{
 	OPERATION_NOT_INIT:     "Operation is not initialized",
 }
 
-//GetSDKRes
+// GetSDKRes
 func GetSDKRes(code int) SDKResponse {
 	var SDKRes SDKResponse
 	v, _ := errm[code]
@@ -155,7 +155,7 @@ func GetSDKRes(code int) SDKResponse {
 	return SDKRes
 }
 
-//GetErrDesc
+// GetErrDesc
 func GetErrDesc(code int) string {
 	v, _ := errm[code]
 	return v
