@@ -728,6 +728,47 @@ func (reqData AssetSendOperation) Get() int {
 	return reqData.operationType
 }
 
+// EvidenceStore
+
+type EvidenceStoreRequest struct {
+	key        string
+	content    string
+	privateKey string
+}
+
+func (reqData *EvidenceStoreRequest) SetKey(Key string) {
+	reqData.key = Key
+}
+func (reqData *EvidenceStoreRequest) GetKey() string {
+	return reqData.key
+}
+
+func (reqData *EvidenceStoreRequest) SetContent(Content string) {
+	reqData.content = Content
+}
+func (reqData *EvidenceStoreRequest) GetContent() string {
+	return reqData.content
+}
+
+func (reqData *EvidenceStoreRequest) SetPrivateKey(PrivateKey string) {
+	reqData.privateKey = PrivateKey
+}
+func (reqData *EvidenceStoreRequest) GetPrivateKey() string {
+	return reqData.privateKey
+}
+
+// EvidenceGet
+type EvidenceGetRequest struct {
+	hash string
+}
+
+func (reqData *EvidenceGetRequest) SetHash(Hash string) {
+	reqData.hash = Hash
+}
+func (reqData *EvidenceGetRequest) GetHash() string {
+	return reqData.hash
+}
+
 // GasSend
 type GasSendOperation struct {
 	sourceAddress string

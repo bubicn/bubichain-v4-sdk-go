@@ -6,6 +6,7 @@ import (
 	"github.com/bubicn/bubichain-v4-sdk-go/src/blockchain"
 	"github.com/bubicn/bubichain-v4-sdk-go/src/common"
 	"github.com/bubicn/bubichain-v4-sdk-go/src/contract"
+	"github.com/bubicn/bubichain-v4-sdk-go/src/evidence"
 	"github.com/bubicn/bubichain-v4-sdk-go/src/exception"
 	"github.com/bubicn/bubichain-v4-sdk-go/src/model"
 	"github.com/bubicn/bubichain-v4-sdk-go/src/token"
@@ -17,9 +18,10 @@ type Sdk struct {
 	Transaction blockchain.TransactionOperation
 	Block       blockchain.BlockOperation
 	Token       token.TokenOperation
+	Evidence    evidence.EvidenceOperation
 }
 
-//Init
+// Init
 func (sdk *Sdk) Init(reqData model.SDKInitRequest) model.SDKInitResponse {
 	var resData model.SDKInitResponse
 	if reqData.GetUrl() == "" {
@@ -45,6 +47,7 @@ func (sdk *Sdk) Init(reqData model.SDKInitRequest) model.SDKInitResponse {
 	sdk.Token.Asset.Url = reqData.GetUrl()
 	sdk.Transaction.Url = reqData.GetUrl()
 	sdk.Block.Url = reqData.GetUrl()
+	sdk.Evidence.Url = reqData.GetUrl()
 	resData.ErrorCode = exception.SUCCESS
 	return resData
 }

@@ -7,20 +7,23 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"time"
 
 	"github.com/bubicn/bubichain-v4-sdk-go/src/crypto/keypair"
 	"github.com/bubicn/bubichain-v4-sdk-go/src/exception"
 	"github.com/bubicn/bubichain-v4-sdk-go/src/model"
 )
 
-//http get
+// http get
 func GetRequest(strUrl string, get string, str string) (*http.Response, exception.SDKResponse) {
 	var buf bytes.Buffer
 	buf.WriteString(strUrl)
 	buf.WriteString(get)
 	buf.WriteString(url.PathEscape(str))
 	strUrl = buf.String()
-	client := &http.Client{}
+	client := &http.Client{
+		Timeout: 30 * time.Second,
+	}
 	newRequest, err := http.NewRequest("GET", strUrl, nil)
 	if err != nil {
 		return nil, exception.GetSDKRes(exception.CONNECTNETWORK_ERROR)
@@ -32,17 +35,20 @@ func GetRequest(strUrl string, get string, str string) (*http.Response, exceptio
 	return response, exception.GetSDKRes(exception.SUCCESS)
 }
 
-//http post
+// http post
 func PostRequest(strUrl string, post string, data []byte) (*http.Response, exception.SDKResponse) {
 	var buf bytes.Buffer
 	buf.WriteString(strUrl)
 	buf.WriteString(post)
 	strUrl = buf.String()
-	client := &http.Client{}
+	client := &http.Client{
+		Timeout: 30 * time.Second,
+	}
 	newRequest, err := http.NewRequest("POST", strUrl, bytes.NewReader(data))
 	if err != nil {
 		return nil, exception.GetSDKRes(exception.CONNECTNETWORK_ERROR)
 	}
+	newRequest.Header.Set("Content-Type", "application/json")
 	response, err := client.Do(newRequest)
 	if err != nil {
 		return nil, exception.GetSDKRes(exception.CONNECTNETWORK_ERROR)
@@ -50,7 +56,7 @@ func PostRequest(strUrl string, post string, data []byte) (*http.Response, excep
 	return response, exception.GetSDKRes(exception.SUCCESS)
 }
 
-//Json
+// Json
 func GetRequestJson(reqData model.TransactionSubmitRequests) ([]byte, exception.SDKResponse) {
 	request := make(map[string]interface{})
 	items := make([]map[string]interface{}, len(reqData.Items))
@@ -67,7 +73,7 @@ func GetRequestJson(reqData model.TransactionSubmitRequests) ([]byte, exception.
 	return requestJson, exception.GetSDKRes(exception.SUCCESS)
 }
 
-//获取最新fees
+// 获取最新fees
 func GetLatestFees(url string) (int64, int64, exception.SDKResponse) {
 	get := "/getLedger?with_fee=true"
 	response, SDKRes := GetRequest(url, get, "")
